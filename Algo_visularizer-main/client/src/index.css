@@ -1,0 +1,193 @@
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
+
+:root {
+  /* Cold Blue Theme */
+  --color-primary: 59 130 246;
+  --color-primary-dark: 37 99 235;
+  --color-primary-light: 96 165 250;
+  --color-secondary: 16 185 129;
+  --color-secondary-dark: 5 150 105;
+  --color-secondary-light: 52 211 153;
+  --color-accent: 6 182 212;
+  --color-background: 2 6 23;
+  --color-background-light: 15 23 42;
+  --color-background-lighter: 30 41 59;
+  --mesh-opacity: 0.12;
+}
+
+[data-theme='cyberpunk'] {
+  --color-primary: 249 115 22;
+  --color-primary-dark: 234 88 12;
+  --color-primary-light: 251 146 60;
+  --color-secondary: 168 85 247;
+  --color-secondary-dark: 147 51 234;
+  --color-secondary-light: 192 132 252;
+  --color-accent: 244 63 94;
+  --color-background: 3 7 18;
+  --color-background-light: 15 23 42;
+  --color-background-lighter: 30 41 59;
+  --mesh-opacity: 0.18;
+}
+
+[data-theme='forest'] {
+  --color-primary: 34 197 94;
+  --color-primary-dark: 22 163 74;
+  --color-primary-light: 74 222 128;
+  --color-secondary: 132 204 22;
+  --color-secondary-dark: 101 163 13;
+  --color-secondary-light: 163 230 53;
+  --color-accent: 234 179 8;
+  --color-background: 1 10 4;
+  --color-background-light: 5 26 16;
+  --color-background-lighter: 10 41 25;
+  --mesh-opacity: 0.1;
+}
+
+[data-theme='deepsea'] {
+  --color-primary: 6 182 212;
+  --color-primary-dark: 8 145 178;
+  --color-primary-light: 34 211 238;
+  --color-secondary: 129 140 248;
+  --color-secondary-dark: 99 102 241;
+  --color-secondary-light: 165 180 252;
+  --color-accent: 20 184 166;
+  --color-background: 1 11 20;
+  --color-background-light: 8 25 42;
+  --color-background-lighter: 12 36 61;
+  --mesh-opacity: 0.15;
+}
+
+@layer base {
+  html, body, #root {
+    @apply h-full w-full m-0 p-0 overflow-hidden;
+  }
+  
+  body {
+    @apply bg-background text-slate-100 antialiased selection:bg-primary/30 selection:text-white;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  }
+
+  /* Smooth layout transitions */
+  * {
+    @apply transition-all duration-300;
+  }
+}
+
+@layer components {
+  .glass {
+    @apply bg-white/10 backdrop-blur-2xl border border-white/20 shadow-glass;
+  }
+
+  .glass-dark {
+    @apply bg-black/60 backdrop-blur-3xl border border-white/10 shadow-2xl;
+  }
+
+  .glass-card {
+    @apply bg-white/[0.05] backdrop-blur-xl border border-white/10 rounded-2xl hover:bg-white/[0.08] transition-all duration-300;
+  }
+  
+  .panel-blur {
+    @apply bg-slate-900/60 backdrop-blur-2xl border border-white/10;
+  }
+  
+  .sidebar-item {
+    @apply flex items-center gap-3 px-4 py-2.5 rounded-xl transition-all duration-300 cursor-pointer text-slate-300 hover:text-white hover:bg-white/10 hover:translate-x-1;
+  }
+  
+  .sidebar-item-active {
+    @apply text-white bg-primary/30 border border-primary/50 shadow-lg shadow-primary/30 translate-x-1 font-bold;
+  }
+
+  .btn-primary {
+    @apply px-4 py-2 rounded-xl bg-primary hover:bg-primary-dark text-white font-black transition-all duration-300 shadow-lg shadow-primary/30 hover:shadow-primary/50 hover:-translate-y-0.5 active:translate-y-0;
+  }
+
+  .btn-secondary {
+    @apply px-4 py-2 rounded-xl bg-white/20 hover:bg-white/30 text-white font-bold transition-all duration-300 border border-white/20 hover:border-white/30;
+  }
+
+  .input-field {
+    @apply bg-white/[0.08] border border-white/20 rounded-xl px-4 py-2 text-sm text-white focus:outline-none focus:ring-2 focus:ring-primary/60 focus:border-primary/60 transition-all duration-300 placeholder:text-slate-400;
+  }
+}
+
+/* Background Pattern Containers */
+.bg-pattern-container {
+  background-color: rgb(var(--color-background));
+  position: relative;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+}
+
+.bg-pattern-container::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  transition: opacity 0.5s ease;
+  z-index: -1;
+}
+
+/* Mesh Pattern */
+[data-bg='mesh'] .bg-pattern-container::before {
+  background-image: 
+    radial-gradient(at 0% 0%, rgba(var(--color-primary), var(--mesh-opacity)) 0px, transparent 50%),
+    radial-gradient(at 100% 0%, rgba(var(--color-secondary), calc(var(--mesh-opacity) * 0.7)) 0px, transparent 50%),
+    radial-gradient(at 100% 100%, rgba(var(--color-accent), calc(var(--mesh-opacity) * 0.7)) 0px, transparent 50%),
+    radial-gradient(at 0% 100%, rgba(var(--color-primary), calc(var(--mesh-opacity) * 0.7)) 0px, transparent 50%);
+}
+
+/* Grid Pattern */
+[data-bg='grid'] .bg-pattern-container::before {
+  background-size: 40px 40px;
+  background-image:
+    linear-gradient(to right, rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+  mask-image: radial-gradient(circle at center, black, transparent 90%);
+}
+
+/* Dots Pattern */
+[data-bg='dots'] .bg-pattern-container::before {
+  background-image: radial-gradient(rgba(255, 255, 255, 0.15) 1.5px, transparent 1.5px);
+  background-size: 32px 32px;
+}
+
+/* Solid Pattern - No extra styles needed as background-color is set on container */
+[data-bg='solid'] .bg-pattern-container::before {
+  opacity: 0;
+}
+
+/* Custom scrollbar */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-white/20 rounded-full hover:bg-white/40 transition-colors;
+}
